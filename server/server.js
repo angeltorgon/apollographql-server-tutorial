@@ -74,9 +74,6 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         authors: (_, __, ___) => {
-            console.log(_)
-            console.log(__)
-            console.log(___)
             const authors = authorData.map((author) => {
                 const books = bookData.filter((book) => book.authorId === author.id)
 
