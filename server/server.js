@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server');
 
-const authors = [
+const authorData = [
     {
         id: 0,
         name: "George",
@@ -18,7 +18,7 @@ const authors = [
     },
 ]
 
-const books = [
+const bookData = [
     {
         id: 0,
         name: "Some Cool Title",
@@ -54,6 +54,7 @@ const books = [
 const typeDefs = gql`
     type Query {
         authors: [Author]
+        books: [Book]
     }
 
     type Author {
@@ -72,9 +73,23 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        authors: () => authors
+        authors: (_, __, ___) => {
+            console.log(_)
+            console.log(__)
+            console.log(___)
+            const authors = authorData.map((author) => {
+                const books = bookData.filter((book) => book.authorId === author.id)
+
+                return {
+                    ...author,
+                    books
+                }
+            })
+
+            return authors
+        }
     }
-}
+};
 
 const server = new ApolloServer({typeDefs, resolvers});
 
