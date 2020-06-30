@@ -67,7 +67,7 @@ const typeDefs = gql`
     type Book {
         id: Int!
         name: String
-        author: String
+        author: Author
     }
 `;
 
@@ -87,6 +87,18 @@ const resolvers = {
             })
 
             return authors
+        },
+        books: () => {
+            const books = bookData.map((book) => {
+                const author = authorData.find((author) => author.id === book.authorId)
+
+                return {
+                    ...book,
+                    author: author
+                }
+            })
+
+            return books
         }
     }
 };
